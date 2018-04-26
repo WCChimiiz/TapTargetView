@@ -43,6 +43,8 @@ public class TapTarget {
   final CharSequence title;
   @Nullable
   final CharSequence description;
+  @Nullable
+  final CharSequence buttonText;
 
   float outerCircleAlpha = 0.96f;
   int targetRadius = 44;
@@ -62,22 +64,34 @@ public class TapTarget {
   private int titleTextColorRes = -1;
   @ColorRes
   private int descriptionTextColorRes = -1;
+  @ColorRes
+  private int buttonTextColorRes = -1;
+  @ColorRes
+  private int buttonBGColorRes = -1;
 
   private Integer outerCircleColor = null;
   private Integer targetCircleColor = null;
   private Integer dimColor = null;
   private Integer titleTextColor = null;
   private Integer descriptionTextColor = null;
+  private Integer buttonTextColor = null;
+  private Integer buttonBGColor = null;
 
   @DimenRes
   private int titleTextDimen = -1;
   @DimenRes
   private int descriptionTextDimen = -1;
+  @DimenRes
+  private int buttonTextDimen = -1;
 
   private int titleTextSize = 20;
   private int descriptionTextSize = 18;
+  private int buttonTextSize = 18;
   int id = -1;
 
+  int cornersRadius = 16;
+
+  boolean buttonVisible = true;
   boolean drawShadow = false;
   boolean cancelable = true;
   boolean tintTarget = true;
@@ -90,7 +104,7 @@ public class TapTarget {
    * <b>Note:</b> This is currently experimental, use at your own risk
    */
   public static TapTarget forToolbarOverflow(Toolbar toolbar, CharSequence title) {
-    return forToolbarOverflow(toolbar, title, null);
+    return forToolbarOverflow(toolbar, title, null, null);
   }
 
   /** Return a tap target for the overflow button from the given toolbar
@@ -98,8 +112,8 @@ public class TapTarget {
    * <b>Note:</b> This is currently experimental, use at your own risk
    */
   public static TapTarget forToolbarOverflow(Toolbar toolbar, CharSequence title,
-                                                    @Nullable CharSequence description) {
-    return new ToolbarTapTarget(toolbar, false, title, description);
+                                                    @Nullable CharSequence description, @Nullable CharSequence buttonText) {
+    return new ToolbarTapTarget(toolbar, false, title, description,buttonText);
   }
 
   /** Return a tap target for the overflow button from the given toolbar
@@ -107,7 +121,7 @@ public class TapTarget {
    * <b>Note:</b> This is currently experimental, use at your own risk
    */
   public static TapTarget forToolbarOverflow(android.widget.Toolbar toolbar, CharSequence title) {
-    return forToolbarOverflow(toolbar, title, null);
+    return forToolbarOverflow(toolbar, title, null, null);
   }
 
   /** Return a tap target for the overflow button from the given toolbar
@@ -115,78 +129,78 @@ public class TapTarget {
    * <b>Note:</b> This is currently experimental, use at your own risk
    */
   public static TapTarget forToolbarOverflow(android.widget.Toolbar toolbar, CharSequence title,
-                                                    @Nullable CharSequence description) {
-    return new ToolbarTapTarget(toolbar, false, title, description);
+                                                    @Nullable CharSequence description, @Nullable CharSequence buttonText) {
+    return new ToolbarTapTarget(toolbar, false, title, description,buttonText);
   }
 
   /** Return a tap target for the navigation button (back, up, etc) from the given toolbar **/
   public static TapTarget forToolbarNavigationIcon(Toolbar toolbar, CharSequence title) {
-    return forToolbarNavigationIcon(toolbar, title, null);
+    return forToolbarNavigationIcon(toolbar, title, null, null);
   }
 
   /** Return a tap target for the navigation button (back, up, etc) from the given toolbar **/
   public static TapTarget forToolbarNavigationIcon(Toolbar toolbar, CharSequence title,
-                                                          @Nullable CharSequence description) {
-    return new ToolbarTapTarget(toolbar, true, title, description);
+                                                          @Nullable CharSequence description, @Nullable CharSequence buttonText) {
+    return new ToolbarTapTarget(toolbar, true, title, description,buttonText);
   }
 
   /** Return a tap target for the navigation button (back, up, etc) from the given toolbar **/
   public static TapTarget forToolbarNavigationIcon(android.widget.Toolbar toolbar, CharSequence title) {
-    return forToolbarNavigationIcon(toolbar, title, null);
+    return forToolbarNavigationIcon(toolbar, title, null, null);
   }
 
   /** Return a tap target for the navigation button (back, up, etc) from the given toolbar **/
   public static TapTarget forToolbarNavigationIcon(android.widget.Toolbar toolbar, CharSequence title,
-                                                   @Nullable CharSequence description) {
-    return new ToolbarTapTarget(toolbar, true, title, description);
+                                                   @Nullable CharSequence description, @Nullable CharSequence buttonText) {
+    return new ToolbarTapTarget(toolbar, true, title, description,buttonText);
   }
 
   /** Return a tap target for the menu item from the given toolbar **/
   public static TapTarget forToolbarMenuItem(Toolbar toolbar, @IdRes int menuItemId,
                                              CharSequence title) {
-    return forToolbarMenuItem(toolbar, menuItemId, title, null);
+    return forToolbarMenuItem(toolbar, menuItemId, title, null, null);
   }
 
   /** Return a tap target for the menu item from the given toolbar **/
   public static TapTarget forToolbarMenuItem(Toolbar toolbar, @IdRes int menuItemId,
-                                             CharSequence title, @Nullable CharSequence description) {
-    return new ToolbarTapTarget(toolbar, menuItemId, title, description);
+                                             CharSequence title, @Nullable CharSequence description, @Nullable CharSequence buttonText) {
+    return new ToolbarTapTarget(toolbar, menuItemId, title, description,buttonText);
   }
 
   /** Return a tap target for the menu item from the given toolbar **/
   public static TapTarget forToolbarMenuItem(android.widget.Toolbar toolbar, @IdRes int menuItemId,
                                              CharSequence title) {
-    return forToolbarMenuItem(toolbar, menuItemId, title, null);
+    return forToolbarMenuItem(toolbar, menuItemId, title, null, null);
   }
 
   /** Return a tap target for the menu item from the given toolbar **/
   public static TapTarget forToolbarMenuItem(android.widget.Toolbar toolbar, @IdRes int menuItemId,
-                                                    CharSequence title, @Nullable CharSequence description) {
-    return new ToolbarTapTarget(toolbar, menuItemId, title, description);
+                                                    CharSequence title, @Nullable CharSequence description, @Nullable CharSequence buttonText) {
+    return new ToolbarTapTarget(toolbar, menuItemId, title, description,buttonText);
   }
 
   /** Return a tap target for the specified view **/
   public static TapTarget forView(View view, CharSequence title) {
-    return forView(view, title, null);
+    return forView(view, title, null,null);
   }
 
   /** Return a tap target for the specified view **/
-  public static TapTarget forView(View view, CharSequence title, @Nullable CharSequence description) {
-    return new ViewTapTarget(view, title, description);
+  public static TapTarget forView(View view, CharSequence title, @Nullable CharSequence description, @Nullable CharSequence buttonText) {
+    return new ViewTapTarget(view, title, description,buttonText);
   }
 
   /** Return a tap target for the specified bounds **/
   public static TapTarget forBounds(Rect bounds, CharSequence title) {
-    return forBounds(bounds, title, null);
+    return forBounds(bounds, title, null,null);
   }
 
   /** Return a tap target for the specified bounds **/
-  public static TapTarget forBounds(Rect bounds, CharSequence title, @Nullable CharSequence description) {
-    return new TapTarget(bounds, title, description);
+  public static TapTarget forBounds(Rect bounds, CharSequence title, @Nullable CharSequence description, @Nullable CharSequence buttonText) {
+    return new TapTarget(bounds, title, description,buttonText);
   }
 
-  protected TapTarget(Rect bounds, CharSequence title, @Nullable CharSequence description) {
-    this(title, description);
+  protected TapTarget(Rect bounds, CharSequence title, @Nullable CharSequence description, @Nullable CharSequence buttonText) {
+    this(title, description,buttonText);
     if (bounds == null) {
       throw new IllegalArgumentException("Cannot pass null bounds or title");
     }
@@ -194,13 +208,14 @@ public class TapTarget {
     this.bounds = bounds;
   }
 
-  protected TapTarget(CharSequence title, @Nullable CharSequence description) {
+  protected TapTarget(CharSequence title, @Nullable CharSequence description, @Nullable CharSequence buttonText) {
     if (title == null) {
       throw new IllegalArgumentException("Cannot pass null title");
     }
 
     this.title = title;
     this.description = description;
+    this.buttonText = buttonText;
   }
 
   /** Specify whether the target should be transparent **/
@@ -248,6 +263,8 @@ public class TapTarget {
   public TapTarget textColor(@ColorRes int color) {
     this.titleTextColorRes = color;
     this.descriptionTextColorRes = color;
+    this.buttonTextColorRes = color;
+    this.buttonBGColorRes = color;
     return this;
   }
 
@@ -256,6 +273,8 @@ public class TapTarget {
   public TapTarget textColorInt(@ColorInt int color) {
     this.titleTextColor = color;
     this.descriptionTextColor = color;
+    this.buttonTextColor = color;
+    this.buttonBGColor = color;
     return this;
   }
 
@@ -282,6 +301,26 @@ public class TapTarget {
   // TODO(Hilal): In v2, this API should be cleaned up / torched
   public TapTarget descriptionTextColorInt(@ColorInt int color) {
     this.descriptionTextColor = color;
+    return this;
+  }
+
+  public TapTarget buttonTextColor(@ColorRes int color) {
+    this.buttonTextColorRes = color;
+    return this;
+  }
+
+  public TapTarget buttonTextColorInt(@ColorInt int color) {
+    this.buttonTextColor = color;
+    return this;
+  }
+
+  public TapTarget buttonBGColor(@ColorRes int color) {
+    this.buttonBGColorRes = color;
+    return this;
+  }
+
+  public TapTarget buttonBGColorInt(@ColorInt int color) {
+    this.buttonBGColor = color;
     return this;
   }
 
@@ -321,6 +360,12 @@ public class TapTarget {
     return this;
   }
 
+  public TapTarget buttonTextSize(int sp) {
+    if (sp < 0) throw new IllegalArgumentException("Given negative text size");
+    this.buttonTextSize = sp;
+    return this;
+  }
+
   /**
    * Specify the text size for the title via a dimen resource
    * <p>
@@ -350,6 +395,11 @@ public class TapTarget {
     return this;
   }
 
+  public TapTarget buttonTextDimen(@DimenRes int dimen) {
+    this.buttonTextDimen = dimen;
+    return this;
+  }
+
   /**
    * Specify the color resource to use as a dim effect
    * <p>
@@ -374,6 +424,16 @@ public class TapTarget {
   /** Specify whether or not to draw a drop shadow around the outer circle **/
   public TapTarget drawShadow(boolean draw) {
     this.drawShadow = draw;
+    return this;
+  }
+
+  public TapTarget cornersRadius(int cR) {
+    this.cornersRadius = cR;
+    return this;
+  }
+
+  public TapTarget buttonVisible(boolean show) {
+    this.buttonVisible = show;
     return this;
   }
 
@@ -475,12 +535,26 @@ public class TapTarget {
     return colorResOrInt(context, descriptionTextColor, descriptionTextColorRes);
   }
 
+  @Nullable
+  Integer buttonTextColorInt(Context context) {
+    return colorResOrInt(context, buttonTextColor, buttonTextColorRes);
+  }
+
+  @Nullable
+  Integer buttonBGColorInt(Context context) {
+    return colorResOrInt(context, buttonBGColor, buttonBGColorRes);
+  }
+
   int titleTextSizePx(Context context) {
     return dimenOrSize(context, titleTextSize, titleTextDimen);
   }
 
   int descriptionTextSizePx(Context context) {
     return dimenOrSize(context, descriptionTextSize, descriptionTextDimen);
+  }
+
+  int buttonTextSizePx(Context context) {
+    return dimenOrSize(context, buttonTextSize, buttonTextDimen);
   }
 
   @Nullable
